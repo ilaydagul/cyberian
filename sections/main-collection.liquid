@@ -1,0 +1,45 @@
+<section class="page-pad">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2><span class="num mono">[ {{ collection.products_count }} ]</span>{{ collection.title }}</h2>
+      <span class="meta mono">{{ collection.products_count }} {% if collection.products_count == 1 %}Piece{% else %}Pieces{% endif %} · Stainless Steel</span>
+    </div>
+
+    {%- if collection.description != blank -%}
+      <div class="rte" style="max-width:640px;margin:-24px 0 48px;color:var(--text-dim);">{{ collection.description }}</div>
+    {%- endif -%}
+
+    {%- if collection.products.size > 0 -%}
+      <div class="grid">
+        {%- paginate collection.products by 24 -%}
+          {%- for product in collection.products -%}
+            {%- render 'product-card', product: product, index: forloop.index -%}
+          {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}
+        <div class="pagination">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">&larr;</a>{%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}">{{ part.title }}</a>
+            {%- else -%}
+              <span class="current">{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}">&rarr;</a>{%- endif -%}
+        </div>
+      {%- endif -%}
+        {%- endpaginate -%}
+    {%- else -%}
+      <div class="empty-state">
+        <p class="es-mark mono">{{ shop.name }}</p>
+        <h3>{{ collection.title }} &mdash; Dropping Soon</h3>
+        <p>This collection is in production. Check back soon.</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Collection", "settings": [] }
+{% endschema %}

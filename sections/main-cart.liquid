@@ -1,0 +1,52 @@
+<section class="page-pad">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2><span class="num mono">[ Cart ]</span>Your Bag</h2>
+      <span class="meta mono">{{ cart.item_count }} {% if cart.item_count == 1 %}Item{% else %}Items{% endif %}</span>
+    </div>
+
+    {%- if cart.item_count > 0 -%}
+      {% form 'cart', cart %}
+        {%- for item in cart.items -%}
+          <div class="cart-row">
+            <a href="{{ item.url }}" class="cart-thumb">
+              {%- if item.image -%}
+                <img src="{{ item.image | image_url: width: 180 }}" alt="{{ item.title | escape }}">
+              {%- endif -%}
+            </a>
+            <div>
+              <a href="{{ item.url }}" class="cart-name">{{ item.product.title }}</a>
+              {%- unless item.variant.title contains 'Default' -%}
+                <span class="cart-variant">{{ item.variant.title }}</span>
+              {%- endunless -%}
+            </div>
+            <input type="number" class="cart-qty" name="updates[]" value="{{ item.quantity }}" min="0" aria-label="Quantity">
+            <div class="cart-line-price">{{ item.final_line_price | money }}</div>
+          </div>
+        {%- endfor -%}
+
+        <div class="cart-footer">
+          <div>
+            <div class="cart-subtotal"><span>Subtotal</span><span>{{ cart.total_price | money }}</span></div>
+            <p class="cart-note">Shipping &amp; taxes calculated at checkout.</p>
+          </div>
+          <div class="cart-actions">
+            <button type="submit" name="update" class="btn btn-outline">Update</button>
+            <button type="submit" name="checkout" class="btn btn-primary">Checkout <span class="arrow">&rarr;</span></button>
+          </div>
+        </div>
+      {% endform %}
+    {%- else -%}
+      <div class="empty-state">
+        <p class="es-mark mono">{{ shop.name }}</p>
+        <h3>Your Bag Is Empty</h3>
+        <p>No pieces selected yet.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">Shop the Collection <span class="arrow">&rarr;</span></a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Cart", "settings": [] }
+{% endschema %}

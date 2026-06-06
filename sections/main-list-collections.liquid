@@ -1,0 +1,29 @@
+<section class="page-pad">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2><span class="num mono">[ All ]</span>Collections</h2>
+    </div>
+    <div class="grid">
+      {%- for collection in collections -%}
+        <a href="{{ collection.url }}" class="card reveal in">
+          <div class="card-img">
+            {%- if collection.featured_image -%}
+              <img src="{{ collection.featured_image | image_url: width: 700 }}" alt="{{ collection.title | escape }}" loading="lazy">
+            {%- else -%}
+              <div class="placeholder">{{ collection.title | split: ' ' | first | upcase }}</div>
+            {%- endif -%}
+            <span class="card-view mono">View &rarr;</span>
+          </div>
+          <div class="card-body">
+            <div class="card-name">{{ collection.title }}</div>
+            <div class="card-price mono">{{ collection.products_count }}</div>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "List collections", "settings": [] }
+{% endschema %}

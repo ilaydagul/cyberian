@@ -1,0 +1,34 @@
+<section class="hero" id="top">
+  <div class="wrap reveal">
+    <p class="hero-kicker mono">{{ section.settings.kicker }}</p>
+    <h1>{{ section.settings.heading_1 }} <span class="light">{{ section.settings.heading_2 }}</span></h1>
+    <p class="hero-sub">{{ section.settings.subline }}</p>
+    <div class="hero-actions">
+      <a href="{{ section.settings.cta_url | default: '#shop' }}" class="btn btn-primary">{{ section.settings.cta_label }} <span class="arrow">&rarr;</span></a>
+      {%- if section.settings.cta2_label != blank -%}
+        <a href="{{ section.settings.cta2_url | default: '#about' }}" class="btn btn-outline">{{ section.settings.cta2_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <span class="line"></span>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Handcrafted · Stainless Steel" },
+    { "type": "text", "id": "heading_1", "label": "Heading word 1", "default": "Cyberian" },
+    { "type": "text", "id": "heading_2", "label": "Heading word 2 (silver)", "default": "Studio" },
+    { "type": "text", "id": "subline", "label": "Subline", "default": "Handcrafted steel jewelry. Assembled link by link, built to last." },
+    { "type": "text", "id": "cta_label", "label": "Primary button label", "default": "Shop Now" },
+    { "type": "url", "id": "cta_url", "label": "Primary button link" },
+    { "type": "text", "id": "cta2_label", "label": "Secondary button label", "default": "The Studio" },
+    { "type": "url", "id": "cta2_url", "label": "Secondary button link" }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

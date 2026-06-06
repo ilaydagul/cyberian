@@ -1,0 +1,18 @@
+<section class="statement">
+  <span class="quote-mark">&rdquo;</span>
+  <div class="wrap reveal">
+    <blockquote>{{ section.settings.quote }}</blockquote>
+    <cite class="mono">{{ section.settings.attribution }}</cite>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Statement",
+  "settings": [
+    { "type": "richtext", "id": "quote", "label": "Quote (wrap key phrase in italics for silver)", "default": "<p>Each piece is handcrafted from stainless steel &mdash; <em>tarnish-resistant, waterproof, built to last.</em> No compromise.</p>" },
+    { "type": "text", "id": "attribution", "label": "Attribution", "default": "— The Cyberian Standard" }
+  ],
+  "presets": [{ "name": "Statement" }]
+}
+{% endschema %}

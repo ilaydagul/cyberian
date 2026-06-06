@@ -1,0 +1,33 @@
+<section class="page-pad">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2><span class="num mono">[ Search ]</span>Search</h2>
+    </div>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" style="margin:-24px 0 48px;">
+      <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="SEARCH PIECES…" class="cart-qty" style="width:100%;max-width:420px;text-align:left;padding:15px 18px;letter-spacing:0.08em;">
+    </form>
+
+    {%- if search.performed -%}
+      {%- if search.results.size > 0 -%}
+        <div class="grid">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {%- render 'product-card', product: item, index: forloop.index -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="empty-state">
+          <p class="es-mark mono">{{ shop.name }}</p>
+          <h3>No Results</h3>
+          <p>Nothing found for &ldquo;{{ search.terms | escape }}&rdquo;.</p>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Search", "settings": [] }
+{% endschema %}

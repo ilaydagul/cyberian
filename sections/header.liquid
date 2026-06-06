@@ -1,0 +1,39 @@
+<header id="header">
+  <div class="nav-inner">
+    <a href="{{ routes.root_url }}" class="brand">{{ section.settings.brand_first }} <span>{{ section.settings.brand_second }}</span></a>
+    <nav>
+      <ul class="nav-links">
+        {%- for link in section.settings.menu.links -%}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- endfor -%}
+        <li>
+          <a href="{{ routes.cart_url }}" class="cart-link">
+            Cart
+            <span class="cart-count" data-cart-count {% if cart.item_count == 0 %}data-empty="true"{% endif %}>{{ cart.item_count }}</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  {%- for link in section.settings.menu.links -%}
+    <a href="{{ link.url }}"><span class="idx mono">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>{{ link.title }}</a>
+  {%- endfor -%}
+  <a href="{{ routes.cart_url }}"><span class="idx mono">{{ section.settings.menu.links.size | plus: 1 | prepend: '0' | slice: -2, 2 }}</span>Cart ({{ cart.item_count }})</a>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "text", "id": "brand_first", "label": "Brand word 1", "default": "Cyberian" },
+    { "type": "text", "id": "brand_second", "label": "Brand word 2", "default": "Studio" },
+    { "type": "link_list", "id": "menu", "label": "Navigation menu", "default": "main-menu" }
+  ]
+}
+{% endschema %}

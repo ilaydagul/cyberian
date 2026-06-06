@@ -1,0 +1,26 @@
+{%- comment -%}
+  Renders one product card.
+  Params: product (object), index (number, for the corner tag)
+{%- endcomment -%}
+{%- assign first_word = product.title | split: ' ' | first | upcase -%}
+<a href="{{ product.url }}" class="card reveal in">
+  <div class="card-img">
+    {%- if index -%}<span class="card-tag mono">{{ index | prepend: '0' | slice: -2, 2 }}</span>{%- endif -%}
+    {%- unless product.available -%}<span class="card-soldout mono">Sold Out</span>{%- endunless -%}
+    {%- if product.featured_image -%}
+      <img src="{{ product.featured_image | image_url: width: 700 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}" loading="lazy" width="700" height="700">
+    {%- else -%}
+      <div class="placeholder">{{ first_word }}</div>
+    {%- endif -%}
+    <span class="card-view mono">View &rarr;</span>
+  </div>
+  <div class="card-body">
+    <div class="card-name">{{ product.title }}</div>
+    <div class="card-price mono">
+      {%- if product.compare_at_price > product.price -%}
+        <span class="was">{{ product.compare_at_price | money }}</span>
+      {%- endif -%}
+      {{ product.price | money }}
+    </div>
+  </div>
+</a>

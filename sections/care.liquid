@@ -1,0 +1,46 @@
+<section class="care-section" id="care">
+  <div class="wrap reveal">
+    <span class="num mono">{{ section.settings.eyebrow }}</span>
+    <h2>{{ section.settings.heading }}</h2>
+    <p>{{ section.settings.body }}</p>
+    <div class="care-points">
+      {%- for block in section.blocks -%}
+        <div class="pt" {{ block.shopify_attributes }}>
+          <div class="n mono">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
+          <div class="t">{{ block.settings.text }}</div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Care",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "[03] — Maintenance" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Care" },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "Your Cyberian piece is stainless steel — it won't tarnish and it's waterproof. Wipe with a soft cloth after heavy use. Store flat or hanging. Avoid prolonged exposure to chemicals." }
+  ],
+  "blocks": [
+    {
+      "type": "point",
+      "name": "Care point",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Wipe with a soft cloth" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Care",
+      "blocks": [
+        { "type": "point", "settings": { "text": "Wipe with a soft cloth" } },
+        { "type": "point", "settings": { "text": "Store flat or hanging" } },
+        { "type": "point", "settings": { "text": "Waterproof & tarnish-free" } },
+        { "type": "point", "settings": { "text": "Avoid perfume & chlorine" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

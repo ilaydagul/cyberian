@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "s1": { "type": "spec", "settings": { "label": "Material", "value": "316L Steel" } },
+        "s2": { "type": "spec", "settings": { "label": "Waterproof", "value": "Yes" } },
+        "s3": { "type": "spec", "settings": { "label": "Tarnish", "value": "Resistant" } }
+      },
+      "block_order": ["s1", "s2", "s3"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

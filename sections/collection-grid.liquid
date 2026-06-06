@@ -1,0 +1,71 @@
+<section class="shop-section" id="shop">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2><span class="num mono">[01]</span>{{ section.settings.title | default: 'The Collection' }}</h2>
+      <span class="meta mono" id="collectionCount"></span>
+    </div>
+
+    {%- comment -%} Build tabs from the category blocks {%- endcomment -%}
+    <div class="cat-tabs reveal" id="catTabs">
+      {%- for block in section.blocks -%}
+        {%- assign col = collections[block.settings.collection] -%}
+        <button class="cat-tab{% if forloop.first %} active{% endif %}" data-cat="cat-{{ forloop.index }}" {{ block.shopify_attributes }}>
+          {{ block.settings.label | default: col.title }} <span class="c">{{ col.products_count | prepend: '0' | slice: -2, 2 }}</span>
+        </button>
+      {%- endfor -%}
+    </div>
+
+    {%- for block in section.blocks -%}
+      {%- assign col = collections[block.settings.collection] -%}
+      <div class="cat-panel" data-panel="cat-{{ forloop.index }}" data-count="{{ col.products_count }}" data-label="{{ block.settings.label | default: col.title | escape }}" {% unless forloop.first %}hidden{% endunless %}>
+        {%- if col.products.size > 0 -%}
+          <div class="grid">
+            {%- for product in col.products limit: block.settings.max_products -%}
+              {%- render 'product-card', product: product, index: forloop.index -%}
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          <div class="empty-state">
+            <p class="es-mark mono">{{ shop.name }}</p>
+            <h3>{{ block.settings.label | default: col.title | default: 'Collection' }} &mdash; Dropping Soon</h3>
+            <p>This collection is in production. Follow us for drop announcements.</p>
+            {%- if section.settings.instagram != blank -%}
+              <a href="{{ section.settings.instagram }}" target="_blank" rel="noopener" class="btn btn-outline">Follow on Instagram</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection grid",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Section title", "default": "The Collection" },
+    { "type": "url", "id": "instagram", "label": "Instagram URL (for empty categories)" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category tab",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Tab label", "default": "Necklaces" },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "range", "id": "max_products", "label": "Max products shown", "min": 4, "max": 48, "step": 4, "default": 24 }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection grid",
+      "blocks": [
+        { "type": "category", "settings": { "label": "Necklaces" } },
+        { "type": "category", "settings": { "label": "Bracelets" } },
+        { "type": "category", "settings": { "label": "Earrings" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

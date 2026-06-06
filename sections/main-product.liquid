@@ -1,0 +1,103 @@
+{%- assign first_word = product.title | split: ' ' | first | upcase -%}
+<section class="page-pad">
+  <div class="wrap">
+    <a href="{{ collection.url | default: routes.all_products_collection_url }}" class="back-link"><span>&larr;</span> Back to collection</a>
+
+    <div class="product-grid">
+      <div class="product-media">
+        <div class="frame">
+          {%- if product.featured_image -%}
+            <img id="ProductMainImage" src="{{ product.featured_image | image_url: width: 1100 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}">
+          {%- else -%}
+            <div class="placeholder">{{ first_word }}</div>
+          {%- endif -%}
+        </div>
+        {%- if product.images.size > 1 -%}
+          <div class="product-thumbs">
+            {%- for image in product.images limit: 5 -%}
+              <button type="button" class="thumb-btn{% if forloop.first %} active{% endif %}" data-full="{{ image | image_url: width: 1100 }}">
+                <img src="{{ image | image_url: width: 200 }}" alt="{{ image.alt | escape }}" loading="lazy">
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="product-info">
+        <p class="product-tag mono">{{ shop.name }} · Steel</p>
+        <h1>{{ product.title }}</h1>
+
+        <div class="product-price" id="ProductPrice">
+          {%- if product.compare_at_price > product.price -%}
+            <span class="was">{{ product.compare_at_price | money }}</span>
+          {%- endif -%}
+          {{ product.price | money }}
+        </div>
+
+        {%- if product.description != blank -%}
+          <div class="product-desc rte">{{ product.description }}</div>
+        {%- else -%}
+          <div class="product-desc rte"><p>Handcrafted from 316L stainless steel, assembled link by link. Tarnish-resistant, waterproof, built to last.</p></div>
+        {%- endif -%}
+
+        {% form 'product', product, id: 'AddToCartForm' %}
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <label class="variant-label" for="Option-{{ option.position }}">{{ option.name }}</label>
+              <select class="variant-select" id="Option-{{ option.position }}" name="options[{{ option.name | escape }}]" data-option-index="{{ forloop.index0 }}">
+                {%- for value in option.values -%}
+                  <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
+                {%- endfor -%}
+              </select>
+            {%- endfor -%}
+          {%- endunless -%}
+
+          <select name="id" id="VariantId" class="visually-hidden" hidden>
+            {%- for variant in product.variants -%}
+              <option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %} {% if variant == product.selected_or_first_available_variant %}selected{% endif %}>{{ variant.title }}</option>
+            {%- endfor -%}
+          </select>
+
+          <button type="submit" name="add" class="btn btn-primary" id="AddToCartBtn" {% unless product.available %}disabled{% endunless %}>
+            <span id="AddToCartText">{% if product.available %}Add to Cart{% else %}Sold Out{% endif %}</span> <span class="arrow">&rarr;</span>
+          </button>
+        {% endform %}
+
+        <div class="product-meta">
+          {%- for block in section.blocks -%}
+            <div class="row" {{ block.shopify_attributes }}>
+              <span>{{ block.settings.label }}</span>
+              <span>{{ block.settings.value }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="application/json" id="ProductVariantsJson">{{ product.variants | json }}</script>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "spec",
+      "name": "Spec row",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Material" },
+        { "type": "text", "id": "value", "label": "Value", "default": "316L Steel" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "spec", "settings": { "label": "Material", "value": "316L Steel" } },
+      { "type": "spec", "settings": { "label": "Waterproof", "value": "Yes" } },
+      { "type": "spec", "settings": { "label": "Tarnish", "value": "Resistant" } }
+    ]
+  }
+}
+{% endschema %}

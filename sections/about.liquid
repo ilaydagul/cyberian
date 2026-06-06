@@ -1,0 +1,62 @@
+<section class="about-section" id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <span class="num mono">{{ section.settings.eyebrow }}</span>
+        <h2>{{ section.settings.heading }}</h2>
+        <div class="rte">{{ section.settings.body }}</div>
+        <div class="about-specs">
+          {%- for block in section.blocks -%}
+            <div class="row" {{ block.shopify_attributes }}>
+              <span>{{ block.settings.label }}</span>
+              <span>{{ block.settings.value }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="about-img reveal">
+        {%- if section.settings.image != blank -%}
+          <img src="{{ section.settings.image | image_url: width: 900 }}" alt="{{ section.settings.image.alt | escape | default: 'The Studio' }}" loading="lazy">
+        {%- else -%}
+          <div class="placeholder">
+            <span class="big">The Studio</span>
+            <span class="small mono">Add image in editor</span>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "[02] — The Studio" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "About" },
+    { "type": "richtext", "id": "body", "label": "Body", "default": "<p>Cyberian Studio makes handcrafted steel chain jewelry. Each piece is built link by link — no casting, no shortcuts.</p><p>Stainless steel only. Tarnish-resistant, waterproof, made to last.</p>" },
+    { "type": "image_picker", "id": "image", "label": "Image" }
+  ],
+  "blocks": [
+    {
+      "type": "spec",
+      "name": "Spec row",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Material" },
+        { "type": "text", "id": "value", "label": "Value", "default": "316L Stainless Steel" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About",
+      "blocks": [
+        { "type": "spec", "settings": { "label": "Material", "value": "316L Stainless Steel" } },
+        { "type": "spec", "settings": { "label": "Assembly", "value": "Hand-assembled" } },
+        { "type": "spec", "settings": { "label": "Waterproof", "value": "Yes" } },
+        { "type": "spec", "settings": { "label": "Tarnish", "value": "Resistant" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

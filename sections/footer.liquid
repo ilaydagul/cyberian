@@ -1,0 +1,67 @@
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="big">{{ section.settings.footer_word | default: 'Cyberian' }}</div>
+        <p class="tag mono">{{ section.settings.footer_tag | default: 'Handcrafted stainless steel · Ships worldwide' }}</p>
+      </div>
+      <div class="footer-links">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'menu_column' -%}
+            <div class="footer-col" {{ block.shopify_attributes }}>
+              <h4>{{ block.settings.heading }}</h4>
+              <ul>
+                {%- for link in block.settings.menu.links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+        <div class="footer-col">
+          <h4>Social</h4>
+          <ul>
+            {%- if section.settings.instagram != blank -%}<li><a href="{{ section.settings.instagram }}" target="_blank" rel="noopener">Instagram</a></li>{%- endif -%}
+            {%- if section.settings.tiktok != blank -%}<li><a href="{{ section.settings.tiktok }}" target="_blank" rel="noopener">TikTok</a></li>{%- endif -%}
+            {%- if section.settings.contact_url != blank -%}<li><a href="{{ section.settings.contact_url }}">Contact</a></li>{%- endif -%}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</span>
+      <span class="mono">{{ section.settings.footer_tag | default: 'Handcrafted stainless steel · Ships worldwide' }}</span>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "text", "id": "footer_word", "label": "Big footer word", "default": "Cyberian" },
+    { "type": "text", "id": "footer_tag", "label": "Tagline", "default": "Handcrafted stainless steel · Ships worldwide" },
+    { "type": "header", "content": "Social links" },
+    { "type": "url", "id": "instagram", "label": "Instagram URL" },
+    { "type": "url", "id": "tiktok", "label": "TikTok URL" },
+    { "type": "url", "id": "contact_url", "label": "Contact URL" }
+  ],
+  "blocks": [
+    {
+      "type": "menu_column",
+      "name": "Menu column",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Shop" },
+        { "type": "link_list", "id": "menu", "label": "Menu" }
+      ]
+    }
+  ],
+  "default": {
+    "settings": {},
+    "blocks": [
+      { "type": "menu_column", "settings": { "heading": "Shop" } },
+      { "type": "menu_column", "settings": { "heading": "Studio" } }
+    ]
+  }
+}
+{% endschema %}
